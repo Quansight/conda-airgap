@@ -22,10 +22,21 @@ strategy:
 container: $[ variables['containerImage'] ]
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  displayName: 'Install Miniconda'
+    curl -sL https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o miniconda.sh \
+      && chmod +x miniconda.sh \
+      && ./miniconda.sh -b -p /usr/share/miniconda \
+      && rm miniconda.sh
+
+    CONDA=/usr/share/miniconda
+    echo "CONDA=$CONDA" | tee -a /etc/environment
+    ln -s $CONDA/bin/conda /usr/bin/conda
+    conda -V
+- script: |
+    conda create -n mirror -c conda-forge conda-mirror
+    conda activate mirror
+    conda mirror -vv --upstream-channel quansight-small-test --target-directory mirror --platform linux-64
+    conda mirror -vv --upstream-channel quansight-small-test --target-directory mirror --platform noarch
+    ls -l mirror
+  displayName: 'Create Local Mirror'
