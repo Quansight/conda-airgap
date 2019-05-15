@@ -12,17 +12,21 @@ pool:
 strategy:
   matrix:
     ubuntu16:
-      containerImage: ubuntu:16.04
+      container: 
+        image: ubuntu:16.04
+        options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
     ubuntu18:
-      containerImage: ubuntu:18.04
+      container: 
+        image: ubuntu:18.04
+        options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
     #rhel7:
     #  containerImage: roboxes/rhel7:latest
     #condaci:
     #  containerImage: continuumio/miniconda3:latest
 
-container: 
-  image: '$(containerImage)'
-  options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
+#container: 
+#  image: '$(containerImage)'
+#  options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
 
 steps:
   # using workaround to get sudo - https://github.com/microsoft/azure-pipelines-agent/issues/2043
