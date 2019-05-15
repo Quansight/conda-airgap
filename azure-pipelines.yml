@@ -15,26 +15,19 @@ strategy:
       containerImage: ubuntu:16.04
     ubuntu18:
       containerImage: ubuntu:18.04
-    rhel7:
-      containerImage: roboxes/rhel7:latest
+    #rhel7:
+    #  containerImage: roboxes/rhel7:latest
 
 
 container: $[ variables['containerImage'] ]
 
 steps:
 - script: |
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh \
-      && chmod +x miniconda.sh \
-      && ./miniconda.sh -b -p /opt/miniconda \
-      && rm miniconda.sh
-
-    export PATH="/opt/miniconda/bin:$PATH"
+    apt install -y curl bzip2
+    curl -sSL https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh
+    bash /tmp/miniconda.sh -bfp /usr/local
+    rm -rf /tmp/miniconda.sh
+    export PATH="/opt/conda/bin:$PATH"
     conda -V
   displayName: 'Install Miniconda'
-- script: |
-    conda create -n mirror -c conda-forge conda-mirror
-    conda activate mirror
-    conda mirror -vv --upstream-channel quansight-small-test --target-directory mirror --platform linux-64
-    conda mirror -vv --upstream-channel quansight-small-test --target-directory mirror --platform noarch
-    ls -l mirror
-  displayName: 'Create Local Mirror'
+
