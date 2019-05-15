@@ -7,7 +7,7 @@ trigger:
 - master
 
 jobs:
-  - job: Ubuntu 16.04
+  - job: Ubuntu16
   pool:
     vmImage: 'ubuntu-16.04'
 
@@ -33,7 +33,7 @@ jobs:
     conda -V
   displayName: 'Display conda version'
 
-    - job: Ubuntu 18.04
+  - job: Ubuntu18
   pool:
     vmImage: 'ubuntu-16.04'
 
@@ -59,7 +59,7 @@ jobs:
     conda -V
   displayName: 'Display conda version'
 
-  - job: Conda Container
+  - job: Conda
   pool:
     vmImage: 'ubuntu-16.04'
 
