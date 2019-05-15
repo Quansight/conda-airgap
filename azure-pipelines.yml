@@ -9,19 +9,19 @@ trigger:
 pool:
   vmImage: 'ubuntu-16.04'
 
-strategy:
-  matrix:
-    ubuntu16:
-      containerImage: ubuntu:16.04
-    ubuntu18:
-      containerImage: ubuntu:18.04
+#strategy:
+#  matrix:
+#    ubuntu16:
+#      containerImage: ubuntu:16.04
+#    ubuntu18:
+#      containerImage: ubuntu:18.04
     #rhel7:
     #  containerImage: roboxes/rhel7:latest
     #condaci:
     #  containerImage: continuumio/miniconda3:latest
 
 container: 
-  image: $[ variables['containerImage'] ]
+  image: ubuntu:16.04
   options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
 
 steps:
