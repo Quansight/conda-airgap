@@ -32,4 +32,11 @@ steps:
     rm -rf /tmp/miniconda.sh
     export PATH="~/miniconda/bin:$PATH"
     conda -V
+<<<<<<< HEAD
   displayName: Install Miniconda, Display Conda version
+=======
+  displayName: 'Display conda version'
+- script: |
+    ./create-small-mirror.sh
+  displayName: 'Create envs from small conda mirror'
+>>>>>>> add small mirror test to pipeline
