@@ -13,8 +13,8 @@ strategy:
   matrix:
     ubuntu16:
       containerImage: ubuntu:16.04
-    #ubuntu18:
-    #  containerImage: ubuntu:18.04
+    ubuntu18:
+      containerImage: ubuntu:18.04
     #rhel7:
     #  containerImage: roboxes/rhel7:latest
     #condaci:
