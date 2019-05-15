@@ -6,23 +6,33 @@
 trigger:
 - master
 
+resources:
+  containers:
+  - container: u16
+      image: ubuntu:16.04
+      options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
+  - container: u18
+      image: ubuntu:18.04
+      options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
+  - container: conda
+      image: continuumio/miniconda3:latest
+
+
 pool:
   vmImage: 'ubuntu-16.04'
 
 strategy:
   matrix:
     ubuntu16:
-      containerImage: ubuntu:16.04
+      containerResource: u16
     ubuntu18:
-      containerImage: ubuntu:18.04
+      containerResource: u18
     #rhel7:
     #  containerImage: roboxes/rhel7:latest
     #condaci:
     #  containerImage: continuumio/miniconda3:latest
 
-container: 
-  image: "$(containerImage)"
-  options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
+container: $[ variables['containerResource'] ]
 
 steps:
   # using workaround to get sudo - https://github.com/microsoft/azure-pipelines-agent/issues/2043
