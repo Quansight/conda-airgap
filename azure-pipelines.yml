@@ -21,7 +21,7 @@ strategy:
     #  containerImage: continuumio/miniconda3:latest
 
 container: 
-  image: $[ variables['containerImage'] ]
+  image: $(containerImage')
   options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
 
 steps:
