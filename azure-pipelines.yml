@@ -11,19 +11,23 @@ pool:
 
 strategy:
   matrix:
+    #condaci:
+    #  containerImage: continuumio/miniconda3:latest
     ubuntu16:
       containerImage: ubuntu:16.04
-    ubuntu18:
-      containerImage: ubuntu:18.04
+    #ubuntu18:
+    #  containerImage: ubuntu:18.04
     #rhel7:
     #  containerImage: roboxes/rhel7:latest
 
 
-container: $[ variables['containerImage'] ]
+container: 
+  image: $[ variables['containerImage'] ]
+  options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
 
 steps:
 - script: |
-    docker exec -t -u 0 ci-container \
+    /tmp/docker exec -t -u 0 ci-container \
     sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
   displayName: Set up sudo
 - script: |
