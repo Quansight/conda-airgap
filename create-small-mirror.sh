@@ -20,9 +20,9 @@ conda create -y --offline -n small-from-mirror-offline -c ./mirror --override-ch
 
 # create conda env package lists as json 
 echo 'saving env package lists as json ...'
-conda list small-from-web --json > small-from-web.json
-conda list small-from-mirror --json > small-from-mirror.json
-conda list small-from-mirror-offline --json > small-from-mirror-offline.json
+conda list -n small-from-web --json > small-from-web.json
+conda list -n small-from-mirror --json > small-from-mirror.json
+conda list -n small-from-mirror-offline --json > small-from-mirror-offline.json
 
 echo '-------------------------------'
 cat small-from-web.json
