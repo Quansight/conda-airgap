@@ -32,9 +32,11 @@ steps:
   displayName: Set up sudo
 - script: |
     sudo apt-get install -y curl bzip2
+  displayName: Install curl & bzip2
+- script: |
     curl -sSL https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh
-    bash /tmp/miniconda.sh -bfp /usr/local
+    bash /tmp/miniconda.sh -bfp ~/miniconda
     rm -rf /tmp/miniconda.sh
-    export PATH="/opt/conda/bin:$PATH"
+    export PATH="~/miniconda/bin:$PATH"
     conda -V
-  displayName: 'Install Miniconda'
+  displayName: Install Miniconda
