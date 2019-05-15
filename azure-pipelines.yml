@@ -9,23 +9,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-16.04'
 
-strategy:
-  matrix:
-    ubuntu16:
-      containerImage: ubuntu:16.04
-    ubuntu18:
-      containerImage: ubuntu:18.04
-    rhel7:
-      containerImage: roboxes/rhel7:latest
-
-
-container: $[ variables['containerImage'] ]
+container: continuumio/miniconda3:latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    conda -V
+  displayName: 'Display conda version'
