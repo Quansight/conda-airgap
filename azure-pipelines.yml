@@ -22,16 +22,16 @@ jobs:
   displayName: Set up sudo
   - script: |
       sudo apt-get install -y curl bzip2
-  displayName: Install curl & bzip2
+    displayName: Install curl & bzip2
   - script: |
       curl -sSL https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh
       bash /tmp/miniconda.sh -bfp ~/miniconda
       rm -rf /tmp/miniconda.sh
       export PATH="~/miniconda/bin:$PATH"
-   displayName: Install Miniconda
-   - script: |
+    displayName: Install Miniconda
+  - script: |
       conda -V
-   displayName: 'Display conda version'
+    displayName: 'Display conda version'
 
 - job: Ubuntu18
   pool:
@@ -45,19 +45,19 @@ jobs:
   - script: |
       /tmp/docker exec -t -u 0 ci-container \
       sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
-  displayName: Set up sudo
+    displayName: Set up sudo
   - script: |
       sudo apt-get install -y curl bzip2
-  displayName: Install curl & bzip2
+    displayName: Install curl & bzip2
   - script: |
       curl -sSL https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh
       bash /tmp/miniconda.sh -bfp ~/miniconda
       rm -rf /tmp/miniconda.sh
       export PATH="~/miniconda/bin:$PATH"
-  displayName: Install Miniconda
+    displayName: Install Miniconda
   - script: |
       conda -V
-  displayName: 'Display conda version'
+    displayName: 'Display conda version'
 
 - job: Conda
   pool:
@@ -65,6 +65,6 @@ jobs:
 
   container: continuumio/miniconda3:latest
   steps:
-    - script: |
+  - script: |
       conda -V
     displayName: 'Display conda version'
