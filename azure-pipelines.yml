@@ -22,7 +22,7 @@ strategy:
 container: $[ variables['containerImage'] ]
 
 steps:
-  - script: |
+- script: |
     /tmp/docker exec -t -u 0 ci-container \
     sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
   displayName: Set up sudo
@@ -34,4 +34,3 @@ steps:
     export PATH="/opt/conda/bin:$PATH"
     conda -V
   displayName: 'Install Miniconda'
-
