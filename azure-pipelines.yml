@@ -12,7 +12,7 @@ pool:
 strategy:
   matrix:
     ubuntu18:
-      containerResource: circleci/buildpack-deps:18.04
+      containerResource: buildpack-deps:18.04-curl
     rhel7:
       containerImage: roboxes/rhel7:latest
     #condaci:
