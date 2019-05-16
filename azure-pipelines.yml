@@ -14,7 +14,7 @@ strategy:
     ubuntu18:
       containerImage: buildpack-deps:18.04-curl
     rhel7:
-      containerImage: roboxes/rhel7:latest
+      containerImage: openshift/base-centos7:latest
     #condaci:
     #  containerImage: continuumio/miniconda3:latest
 
