@@ -12,13 +12,13 @@ pool:
 strategy:
   matrix:
     ubuntu18:
-      containerResource: buildpack-deps:18.04-curl
+      containerImage: buildpack-deps:18.04-curl
     rhel7:
       containerImage: roboxes/rhel7:latest
     #condaci:
     #  containerImage: continuumio/miniconda3:latest
 
-container: $[ variables['containerResource'] ]
+container: $[ variables['containerImage'] ]
 
 steps:
 - script: |
