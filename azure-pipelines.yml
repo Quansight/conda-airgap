@@ -24,7 +24,7 @@ container: $[ variables['containerResource'] ]
 
 steps:
 - script: |
-    apt install -y bzip2
+    sudo apt install -y bzip2
   displayName: Install bzip2 
 - script: |
     curl -sSL https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh
