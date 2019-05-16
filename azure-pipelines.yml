@@ -12,9 +12,9 @@ pool:
 strategy:
   matrix:
     ubuntu16:
-      containerResource: buildpack-deps:16.04-curl
+      containerResource: circleci/buildpack-deps:16.04-curl
     ubuntu18:
-      containerResource: buildpack-deps:18.04-curl
+      containerResource: circleci/buildpack-deps:18.04-curl
     #rhel7:
     #  containerImage: roboxes/rhel7:latest
     #condaci:
@@ -23,9 +23,6 @@ strategy:
 container: $[ variables['containerResource'] ]
 
 steps:
-- script: |
-    sudo apt install -y bzip2
-  displayName: Install bzip2 
 - script: |
     curl -sSL https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh
     bash /tmp/miniconda.sh -bfp ~/miniconda
