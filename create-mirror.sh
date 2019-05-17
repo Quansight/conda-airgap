@@ -18,7 +18,7 @@ eval "$(conda shell.bash hook)"
 
 # create local mirror
 echo "creating conda env with conda-mirror installed"
-conda create -y -n mirror-env -c conda-forge conda-mirror pytest
+conda create -y -n mirror-env -c conda-forge conda-mirror
 conda activate mirror-env
 
 echo "creating local mirror of $1 channel (linux-64, noarch)..."
