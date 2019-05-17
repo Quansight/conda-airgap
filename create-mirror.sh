@@ -23,4 +23,4 @@ conda activate mirror-env
 echo "creating local mirror of $1 channel (linux-64, noarch)..."
 conda mirror -vv --upstream-channel $1 --target-directory mirrors/$1 --platform linux-64
 conda mirror -vv --upstream-channel $1 --target-directory mirrors/$1 --platform noarch
-conda deactivate mirror-env
+conda deactivate
