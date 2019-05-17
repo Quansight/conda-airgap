@@ -1,6 +1,19 @@
 #!/bin/bash
-# usage:
-#   create-env.sh <channel> <env-name> <list of packages>
+# Creates 3 conda envs based on a package list: from-web, from-mirror and from-mirror with offline flag
+
+display_usage() { 
+    echo "Creates 3 conda envs based on a package list: from-web, from-mirror and from-mirror with offline flag"
+    echo "Usage: $0 <channel> <env-name> <packages>"
+    echo "  channel: name of conda channel & mirror"
+    echo "  env-name: base name of conda environments being created"
+    echo "  packages: list of packages to install"
+	} 
+
+if [[ $# == 0 || $1 == "--help" ||  $1 == "-h" ]] 
+then
+    display_usage
+    exit 0
+fi
 
 # create web and offline mirrors
 echo "-----------------------------------------------------------------"

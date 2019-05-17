@@ -1,6 +1,17 @@
 #!/bin/bash
-# usage:
-#   create-mirror.sh <channel> 
+# Creates local mirror of a conda channel
+
+display_usage() { 
+    echo "Creates local mirror of a conda channel"
+    echo "Usage: create-mirror.sh <channel>"
+    echo "  channel: channel to be mirrored"
+	} 
+
+if [[ ( $# == "--help") ||  $# == "-h" ]] 
+then 
+    display_usage
+    exit 0
+fi
 
 # activate conda
 eval "$(conda shell.bash hook)"
