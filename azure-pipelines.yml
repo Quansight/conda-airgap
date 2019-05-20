@@ -32,7 +32,7 @@ steps:
     rm -rf /tmp/miniconda.sh
     export PATH="~/miniconda/bin:$PATH"
     conda init
-    conda create -n test python=3 pytest 
+    conda create -y -n test python=3 pytest 
     conda -V
   displayName: 'Install miniconda and create a testing env'
 - script: |
