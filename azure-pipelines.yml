@@ -31,12 +31,11 @@ steps:
     bash /tmp/miniconda.sh -bfp ~/miniconda
     rm -rf /tmp/miniconda.sh
     export PATH="~/miniconda/bin:$PATH"
+    conda init
+    conda create -n test python=3 pytest 
     conda -V
-<<<<<<< HEAD
-  displayName: Install Miniconda, Display Conda version
-=======
-  displayName: 'Display conda version'
+  displayName: 'Install miniconda and create a testing env'
 - script: |
-    ./create-small-mirror.sh
-  displayName: 'Create envs from small conda mirror'
->>>>>>> add small mirror test to pipeline
+    conda activate test
+    pytest --capture=sys -v
+  displayName: 'Run Tests'
