@@ -23,6 +23,7 @@ echo "-----------------------------------------------------------------"
 conda create -y -n $2-from-web -c $1 --override-channels "${@:3}"
 conda create -y -n $2-from-mirror -c ./mirrors/$1 --override-channels "${@:3}"
 conda create -y --offline -n $2-from-mirror-offline -c ./mirrors/$1 --override-channels "${@:3}"
+conda clean -all
 
 # save conda env package lists as json 
 echo 'saving env package lists as json ...'
