@@ -31,7 +31,7 @@ steps:
     bash /tmp/miniconda.sh -bfp ~/miniconda
     rm -rf /tmp/miniconda.sh
     export PATH="~/miniconda/bin:$PATH"
-    conda init bash
+    eval "$(conda shell.bash hook)"
     conda -V
     conda create -y -n test python=3 pytest 
     conda activate test
