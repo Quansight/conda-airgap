@@ -3,11 +3,12 @@
 
 display_usage() { 
     echo "Creates local mirror of a conda channel"
+    echo
     echo "Usage: create-mirror.sh <channel>"
     echo "  channel: channel to be mirrored"
 	} 
 
-if [[ ( $# == "--help") ||  $# == "-h" ]] 
+if [[ $# == 0 || $1 == "--help" ||  $1 == "-h" ]] 
 then 
     display_usage
     exit 0

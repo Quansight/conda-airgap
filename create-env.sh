@@ -3,6 +3,7 @@
 
 display_usage() { 
     echo "Creates 3 conda envs based on a package list: from-web, from-mirror and from-mirror with offline flag"
+    echo
     echo "Usage: $0 <channel> <env-name> <packages>"
     echo "  channel: name of conda channel & mirror"
     echo "  env-name: base name of conda environments being created"
