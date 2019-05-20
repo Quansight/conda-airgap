@@ -31,5 +31,9 @@ steps:
     bash /tmp/miniconda.sh -bfp ~/miniconda
     rm -rf /tmp/miniconda.sh
     export PATH="~/miniconda/bin:$PATH"
+    eval "$(conda shell.bash hook)"
     conda -V
-  displayName: Install Miniconda, Display Conda version
+    conda create -y -n test python=3 pytest 
+    conda activate test
+    pytest --capture=sys -v
+  displayName: 'Run Tests'
