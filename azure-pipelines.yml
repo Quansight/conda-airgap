@@ -36,6 +36,8 @@ steps:
     conda -V
   displayName: 'Install miniconda and create a testing env'
 - script: |
+    export PATH="~/miniconda/bin:$PATH"
+    conda init
     conda activate test
     pytest --capture=sys -v
   displayName: 'Run Tests'
