@@ -3,6 +3,7 @@
 import pytest
 import subprocess
 import json
+import shutil
 
 CHANNEL = 'quansight-small-test'
 
