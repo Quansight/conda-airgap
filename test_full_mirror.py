@@ -13,6 +13,7 @@ def setup_mirror():
     print('finish setting up mirrors')
     yield setup_mirror
     print('delete mirror')
+    shutil.rmtree(f'mirrors/{CHANNEL}')
 
 
 @pytest.mark.parametrize("pkg_list", [['python'], ['python', 'conda']])
