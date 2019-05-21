@@ -1,0 +1,9 @@
+blacklist:
+    - build: "*py27*"
+    - build: "*py35*"
+    - build: "*py36*"
+    - build_number: "10*"
+
+whitelist:
+    - build_number: "1003" # these must be specified as strings 
+    - build_number: "1004"

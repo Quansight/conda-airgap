@@ -1,0 +1,5 @@
+blacklist:
+    - build: "*py27*"
+    - build: "*py35*"
+    - build: "*py36*"
+    - build_number: "10*"
