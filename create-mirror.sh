@@ -4,8 +4,9 @@
 display_usage() { 
     echo "Creates local mirror of a conda channel"
     echo
-    echo "Usage: create-mirror.sh <channel>"
+    echo "Usage: create-mirror.sh <channel> [flags]"
     echo "  channel: channel to be mirrored"
+    echo "  flags: flags to pass to conda mirror"
 	} 
 
 if [[ $# == 0 || $1 == "--help" ||  $1 == "-h" ]] 
@@ -23,6 +24,6 @@ conda create -y -n mirror-env -c conda-forge conda-mirror
 conda activate mirror-env
 
 echo "creating local mirror of $1 channel (linux-64, noarch)..."
-conda mirror -vv --upstream-channel $1 --target-directory mirrors/$1 --platform linux-64
-conda mirror -vv --upstream-channel $1 --target-directory mirrors/$1 --platform noarch
+conda mirror -vv --upstream-channel $1 --target-directory mirrors/$1 --platform linux-64 "${@:2}"
+conda mirror -vv --upstream-channel $1 --target-directory mirrors/$1 --platform noarch "${@:2}"
 conda deactivate
