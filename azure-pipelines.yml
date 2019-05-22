@@ -11,7 +11,7 @@ pool:
 strategy:
   matrix:
     ubuntu16:
-      containerImage: buildpack-deps:16.04-scm
+      containerImage: buildpack-deps:16.04-curl
     ubuntu18:
       containerImage: buildpack-deps:18.04-curl
     rhel7:
@@ -20,9 +20,15 @@ strategy:
     #condaci:
     #  containerImage: continuumio/miniconda3:latest
 
-container: $[ variables['containerImage'] ]
+container:
+  image: $[ variables['containerImage'] ]
+  options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
 
 steps:
+- script: |
+    /tmp/docker exec -t -u 0 ci-container \
+    sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install bzip2"
+  displayName: Set up sudo
 - script: |
     curl -sSL https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh
     bash /tmp/miniconda.sh -bfp ~/miniconda
