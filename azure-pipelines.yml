@@ -11,7 +11,7 @@ pool:
 strategy:
   matrix:
     ubuntu16:
-      containerImage: buildpack-deps:18.04-curl
+      containerImage: buildpack-deps:16.04-curl
     ubuntu18:
       containerImage: buildpack-deps:18.04-curl
     rhel7:
