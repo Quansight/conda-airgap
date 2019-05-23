@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - master
 
@@ -10,11 +5,13 @@ pool:
   vmImage: 'ubuntu-16.04'
 
 # containers must contain curl & bzip2 in order to install Miniconda.
-# Azure has issues with running apt-get inside of contains because of the 
+# Azure has issues with running apt-get inside of contains because of the
 # way it mounts them. Most base images on dockerhub do not contain curl & bzip2
 # see https://github.com/Microsoft/azure-pipelines-agent/issues/2043
 strategy:
   matrix:
+    ubuntu16:
+      containerImage: quansight/ubuntu-16.04:latest
     ubuntu18:
       containerImage: buildpack-deps:18.04-curl
     rhel7:
@@ -33,7 +30,7 @@ steps:
     export PATH="~/miniconda/bin:$PATH"
     eval "$(conda shell.bash hook)"
     conda -V
-    conda create -y -n test python=3 pytest 
+    conda create -y -n test python=3 pytest
     conda activate test
     pytest --capture=sys -v
   displayName: 'Run Tests'
