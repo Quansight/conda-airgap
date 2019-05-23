@@ -11,7 +11,7 @@ pool:
 strategy:
   matrix:
     ubuntu16:
-      containerImage: quansight:ubuntu-16.04
+      containerImage: quansight/ubuntu-16.04:latest
     ubuntu18:
       containerImage: buildpack-deps:18.04-curl
     rhel7:
