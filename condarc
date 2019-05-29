@@ -1,0 +1,5 @@
+offline: False
+show_channel_urls: True
+allow_other_channels: False
+default_channels:
+  - http://localhost:8000/quansight-small-test

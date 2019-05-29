@@ -1,4 +1,5 @@
 """test full mirror of quansight-small-test"""
+import os
 import sys
 import subprocess
 import json
@@ -7,54 +8,88 @@ import shutil
 import pytest
 
 
-CHANNEL = 'quansight-small-test'
+CHANNEL = "quansight-small-test"
 
-@pytest.fixture(scope='module')
+
+@pytest.fixture(scope="module")
 def setup_mirror():
-    print('setting up mirrors')
-    subprocess.run(['./create-mirror.sh', CHANNEL])
-    print('finish setting up mirrors')
+    print("setting up mirrors")
+    subprocess.run(["./create-mirror.sh", CHANNEL])
+    print("finish setting up mirrors")
     yield setup_mirror
-    print('delete mirror')
-    shutil.rmtree(f'mirrors/{CHANNEL}')
+    print("delete mirror")
+    shutil.rmtree(f"mirrors/{CHANNEL}")
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def setup_mirror_server(setup_mirror):
-    print('starting up HTTP server')
-    proc = subprocess.Popen([sys.executable, "-m", "http.server", "8000"],
-                            cwd='mirrors')
+    print("starting up HTTP server")
+    proc = subprocess.Popen(
+        [sys.executable, "-m", "http.server", "8000"], cwd="mirrors"
+    )
     yield proc
     proc.terminate()
     proc.wait()
-    print('HTTP server shutdown')
+    print("HTTP server shutdown")
 
 
-@pytest.mark.parametrize("pkg_list", [['python'], ['python', 'conda']])
+@pytest.mark.parametrize("pkg_list", [["python"], ["python", "conda"]])
 def test_env_creation(setup_mirror, pkg_list):
-    env_name = '_'.join(pkg_list)
-    subprocess.run(['./create-env.sh', CHANNEL, env_name, *pkg_list])
+    env_name = "_".join(pkg_list)
+    subprocess.run(["./create-env.sh", CHANNEL, env_name, *pkg_list])
 
-    fweb = f'test-data/{env_name}-from-web.json'
-    fmirror = f'test-data/{env_name}-from-mirror.json'
-    foffline = f'test-data/{env_name}-from-mirror-offline.json'
+    fweb = f"test-data/{env_name}-from-web.json"
+    fmirror = f"test-data/{env_name}-from-mirror.json"
+    foffline = f"test-data/{env_name}-from-mirror-offline.json"
 
     assert _clean_json(fweb) == _clean_json(fmirror)
     assert _clean_json(fmirror) == _clean_json(foffline)
 
 
-@pytest.mark.parametrize("pkg_list", [['python'], ['python', 'conda']])
+@pytest.mark.parametrize("pkg_list", [["python"], ["python", "conda"]])
 def test_env_creation_http(setup_mirror_server, pkg_list):
-    env_name = '_'.join(pkg_list)
-    subprocess.run(['./create-env.sh', f"http://localhost:8000/{CHANNEL}",
-                   env_name, *pkg_list])
+    env_name = "_".join(pkg_list)
+    subprocess.run(
+        ["./create-env.sh", f"http://localhost:8000/{CHANNEL}", env_name, *pkg_list]
+    )
 
-    fweb = f'test-data/{env_name}-from-web.json'
-    fmirror = f'test-data/{env_name}-from-mirror.json'
-    foffline = f'test-data/{env_name}-from-mirror-offline.json'
+    fweb = f"test-data/{env_name}-from-web.json"
+    fmirror = f"test-data/{env_name}-from-mirror.json"
+    foffline = f"test-data/{env_name}-from-mirror-offline.json"
 
     assert _clean_json(fweb) == _clean_json(fmirror)
     assert _clean_json(fmirror) == _clean_json(foffline)
+
+
+@pytest.mark.parametrize("pkg_list", [["python"], ["python", "conda"]])
+def test_env_creation_condarc(setup_mirror_server, pkg_list):
+    env_name = "_".join(pkg_list)
+    env = dict(os.environ)
+    env["CONDARC"] = "./condarc"
+
+    print("-----------------------------------------------------------------")
+    print(f"Creating new envs from web and offline mirrors using packages: {pkg_list}")
+    print("-----------------------------------------------------------------")
+    subprocess.run(
+        ["conda", "create", "-y", "-n", env_name + "-from-mirror-offline", *pkg_list],
+        env=env,
+    )
+    subprocess.run(["conda", "clean", "--all", "-y"], env=env)
+
+    print("saving env package lists as json ...")
+    os.makedirs("test-data", exist_ok=True)
+    foffline = f"test-data/{env_name}-from-mirror-offline.json"
+    with open(foffline, "wb") as f:
+        subprocess.run(
+            ["conda", "list", "--json", "-n", env_name + "-from-mirror-offline"],
+            env=env,
+            stdout=f,
+        )
+
+    # check that we actually got the packages we expected to
+    data = _clean_json(foffline)
+    pkg_names = {rec["name"] for rec in data}
+    assert set(pkg_list) <= pkg_names
 
 
 def _clean_json(fname):
@@ -64,8 +99,8 @@ def _clean_json(fname):
 
     clean = []
     for rec in data:
-        del rec['base_url']
-        del rec['channel']
+        del rec["base_url"]
+        del rec["channel"]
         clean.append(rec)
 
     return sorted(clean, key=lambda d: sorted(d.items()))
