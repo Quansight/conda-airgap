@@ -9,6 +9,7 @@ import pytest
 
 
 CHANNEL = "quansight-small-test"
+CONDARC = os.path.join(os.path.dirname(__file__), 'condarc')
 PROXY_SETTINGS = {
     "HTTP_PROXY": "http://fake.proxy.server/",
     "HTTPS_PROXY": "https://fake.proxy.server/",
@@ -95,21 +96,26 @@ def check_only_offline(env, pkg_list):
     print("-----------------------------------------------------------------")
     print(f"Creating new envs from web and offline mirrors using packages: {pkg_list}")
     print("-----------------------------------------------------------------")
-    subprocess.run(
+    p = subprocess.run(["conda", "config", "--show"], env=env)
+    p.check_returncode()
+    p = subprocess.run(
         ["conda", "create", "-y", "-n", env_name + "-from-mirror-offline", *pkg_list],
         env=env,
     )
-    subprocess.run(["conda", "clean", "--all", "-y"], env=env)
+    p.check_returncode()
+    p = subprocess.run(["conda", "clean", "--all", "-y"], env=env)
+    p.check_returncode()
 
     print("saving env package lists as json ...")
     os.makedirs("test-data", exist_ok=True)
     foffline = f"test-data/{env_name}-from-mirror-offline.json"
     with open(foffline, "wb") as f:
-        subprocess.run(
+        p = subprocess.run(
             ["conda", "list", "--json", "-n", env_name + "-from-mirror-offline"],
             env=env,
             stdout=f,
         )
+        p.check_returncode()
 
     # check that we actually got the packages we expected to
     data = _clean_json(foffline)
@@ -120,14 +126,14 @@ def check_only_offline(env, pkg_list):
 @pytest.mark.parametrize("pkg_list", [["python"], ["python", "conda"]])
 def test_env_creation_condarc(setup_mirror_server, pkg_list):
     env = dict(os.environ)
-    env["CONDARC"] = "./condarc"
+    env["CONDARC"] = CONDARC
     check_only_offline(env, pkg_list)
 
 
 @pytest.mark.parametrize("pkg_list", [["python"], ["python", "conda"]])
 def test_env_creation_condarc_no_proxy(setup_mirror_server, pkg_list):
     env = dict(os.environ)
-    env["CONDARC"] = "./condarc"
+    env["CONDARC"] = CONDARC
     env.update(PROXY_SETTINGS)
     check_only_offline(env, pkg_list)
 
