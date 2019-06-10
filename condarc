@@ -1,5 +1,9 @@
-offline: False
-show_channel_urls: True
-allow_other_channels: False
-default_channels:
-  - http://localhost:8000/quansight-small-test
+offline: false  #!final
+show_channel_urls: true
+allow_other_channels: False  #!final
+channels:  #!final
+  - http://localhost:8000/quansight-small-test  #!top
+default_channels:  #!final
+  - http://localhost:8000/quansight-small-test  #!top
+whitelist_channels:  #!final
+  - http://localhost:8000/quansight-small-test  #!top
