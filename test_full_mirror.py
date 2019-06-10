@@ -70,27 +70,6 @@ def test_env_creation_http(setup_mirror_server, pkg_list):
     assert _clean_json(fmirror) == _clean_json(foffline)
 
 
-@pytest.mark.parametrize("pkg_list", [["python"], ["python", "conda"]])
-def test_env_creation_http_no_proxy(setup_mirror_server, pkg_list):
-    # add some bad proxy setting to make sure that we are really getting local
-    # packages only.
-    env_name = "_".join(pkg_list)
-    env = dict(os.environ)
-    env.update(PROXY_SETTINGS)
-
-    subprocess.run(
-        ["./create-env.sh", f"http://localhost:8000/{CHANNEL}", env_name, *pkg_list],
-        env=env
-    )
-
-    fweb = f"test-data/{env_name}-from-web.json"
-    fmirror = f"test-data/{env_name}-from-mirror.json"
-    foffline = f"test-data/{env_name}-from-mirror-offline.json"
-
-    assert _clean_json(fweb) == _clean_json(fmirror)
-    assert _clean_json(fmirror) == _clean_json(foffline)
-
-
 def check_only_offline(env, pkg_list):
     env_name = "_".join(pkg_list)
     print("-----------------------------------------------------------------")
@@ -99,7 +78,7 @@ def check_only_offline(env, pkg_list):
     p = subprocess.run(["conda", "config", "--show"], env=env)
     p.check_returncode()
     p = subprocess.run(
-        ["conda", "create", "-y", "-n", env_name + "-from-mirror-offline", *pkg_list],
+        ["conda", "create", "-y", "-n", env_name + "-from-mirror-offline", "--override-channels", "-c", "http://localhost:8000/quansight-small-test", *pkg_list],
         env=env,
     )
     p.check_returncode()
