@@ -15,6 +15,12 @@ then
     exit 0
 fi
 
+if [[ $1 == "main" || $1 == "r" || $1 == "free" ]]; then
+    url="https://repo.anaconda.com/pkgs/$1"
+else
+    url=$1
+fi
+
 # activate conda
 eval "$(conda shell.bash hook)"
 
@@ -24,6 +30,6 @@ conda create -y -n mirror-env -c quansight -c conda-forge conda-mirror
 conda activate mirror-env
 
 echo "creating local mirror of $1 channel (linux-64, noarch)..."
-conda mirror -vv --insecure --upstream-channel $1 --target-directory mirrors/$1 --platform linux-64 "${@:2}"
-conda mirror -vv --insecure --upstream-channel $1 --target-directory mirrors/$1 --platform noarch "${@:2}"
+conda mirror -vv --insecure --upstream-channel $url --target-directory mirrors/$1 --platform linux-64 "${@:2}"
+conda mirror -vv --insecure --upstream-channel $url --target-directory mirrors/$1 --platform noarch "${@:2}"
 conda deactivate
