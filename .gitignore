@@ -106,3 +106,4 @@ venv.bak/
 # test data folders
 /mirrors
 /test-data
+/tmp
