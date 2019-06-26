@@ -34,7 +34,9 @@ export PYTHONWARNINGS=ignore
 mkdir -p tmp
 conda mirror -vv --insecure --upstream-channel $url --target-directory mirrors/$1 \
     --temp-directory ./tmp --platform linux-64 "${@:2}"
+echo "local mirror of linux-64 complete, starting noarch"
 conda mirror -vv --insecure --upstream-channel $url --target-directory mirrors/$1 \
     --temp-directory ./tmp --platform noarch "${@:2}"
+echo "local mirror of noarch complete"
 rm -rf tmp
 conda deactivate
