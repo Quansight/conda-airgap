@@ -1,11 +1,13 @@
 #!/bin/bash
 # Creates local mirror of a conda channel
+shopt -s globstar
 
 display_usage() {
     echo "Creates local mirror of a conda channel"
     echo
-    echo "Usage: create-mirror.sh <channel> [flags]"
+    echo "Usage: create-mirror.sh <channel> [--clean-repodata] [flags]"
     echo "  channel: channel to be mirrored"
+    echo "  --clean-repodata: ensure updated repodata.json files"
     echo "  flags: flags to pass to conda mirror"
 	}
 
@@ -21,6 +23,15 @@ else
     url=$1
 fi
 
+if [[ $2 == "--clean-repodata" ]]; then
+    echo Cleaning mirrors/$1/**/*repodata.json*
+    rm -rf mirrors/$1/**/*repodata.json*
+    flags_start=3
+else
+    flags_start=2
+fi
+
+
 # activate conda
 eval "$(conda shell.bash hook)"
 
@@ -33,10 +44,10 @@ echo "creating local mirror of $1 channel (linux-64, noarch)..."
 export PYTHONWARNINGS=ignore
 mkdir -p tmp
 conda mirror -vv --insecure --upstream-channel $url --target-directory mirrors/$1 \
-    --temp-directory ./tmp --platform linux-64 "${@:2}"
+    --temp-directory ./tmp --platform linux-64 "${@:$flags_start}"
 echo "local mirror of linux-64 complete, starting noarch"
 conda mirror -vv --insecure --upstream-channel $url --target-directory mirrors/$1 \
-    --temp-directory ./tmp --platform noarch "${@:2}"
+    --temp-directory ./tmp --platform noarch "${@:$flags_start}"
 echo "local mirror of noarch complete"
 rm -rf tmp
 conda deactivate
