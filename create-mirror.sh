@@ -42,6 +42,7 @@ conda activate mirror-env
 
 echo "creating local mirror of $1 channel (linux-64, noarch)..."
 export PYTHONWARNINGS=ignore
+mkdir -p mirrors
 mkdir -p tmp
 conda mirror -vv --insecure --upstream-channel $url --target-directory mirrors/$1 \
     --temp-directory ./tmp --platform linux-64 "${@:$flags_start}"
